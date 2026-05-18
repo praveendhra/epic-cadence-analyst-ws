@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <title>Epic Cadence Analyst II, Work Sample</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --teal-900: #0d3331;
+      --teal-700: #0e6655;
+      --teal-500: #14967a;
+      --teal-300: #4ecba8;
+      --teal-100: #d0f5ec;
+      --teal-50:  #f0fdf8;
+      --dark:     #0a2826;
+      --text:     #1a2e2d;
+      --muted:    #5a7370;
+      --border:   #c8e8e0;
+      --card-bg:  #ffffff;
+      --sidebar-w: 236px;
+      --font: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font);
+      color: var(--text);
+      background: var(--teal-50);
+      display: flex;
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* ── Sidebar ── */
+    #sidebar {
+      position: fixed;
+      top: 0; left: 0;
+      width: var(--sidebar-w);
+      height: 100vh;
+      background: var(--dark);
+      overflow-y: auto;
+      padding: 1.5rem 0 2rem;
+      z-index: 100;
+      scrollbar-width: thin;
+      scrollbar-color: var(--teal-700) var(--dark);
+    }
+    #sidebar::-webkit-scrollbar { width: 4px; }
+    #sidebar::-webkit-scrollbar-thumb { background: var(--teal-700); border-radius: 2px; }
+
+    #sidebar .sidebar-brand {
+      padding: 0 1.2rem 1.2rem;
+      border-bottom: 1px solid rgba(78,203,168,0.15);
+      margin-bottom: 0.8rem;
+    }
+    #sidebar .sidebar-brand .brand-role {
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal-300);
+      font-weight: 600;
+    }
+    #sidebar .sidebar-brand .brand-name {
+      font-size: 0.85rem;
+      color: #fff;
+      margin-top: 0.2rem;
+      opacity: 0.85;
+    }
+
+    #sidebar .nav-group-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(78,203,168,0.5);
+      padding: 0.9rem 1.2rem 0.3rem;
+      font-weight: 600;
+    }
+    #sidebar a {
+      display: block;
+      padding: 0.42rem 1.2rem;
+      color: #8ab9b3;
+      text-decoration: none;
+      font-size: 0.82rem;
+      line-height: 1.4;
+      border-left: 3px solid transparent;
+      transition: color 0.12s, background 0.12s, border-color 0.12s;
+    }
+    #sidebar a:hover,
+    #sidebar a.active {
+      color: #fff;
+      background: rgba(78,203,168,0.1);
+      border-left-color: var(--teal-300);
+    }
+    #sidebar a.ext-link {
+      margin-top: 0.5rem;
+      color: var(--teal-300);
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+    #sidebar a.ext-link:hover { color: #fff; }
+
+    /* ── Main ── */
+    #main {
+      margin-left: var(--sidebar-w);
+      flex: 1;
+      min-width: 0;
+    }
+
+    /* ── Hero ── */
+    #hero {
+      background: linear-gradient(135deg, var(--teal-900) 0%, var(--teal-700) 55%, var(--teal-500) 100%);
+      color: #fff;
+      padding: 3rem 3rem 2.5rem;
+    }
+    #hero .role-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      opacity: 0.65;
+      margin-bottom: 0.6rem;
+    }
+    #hero h1 {
+      font-size: 1.85rem;
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 0.75rem;
+      max-width: 620px;
+    }
+    #hero .subtitle {
+      opacity: 0.82;
+      font-size: 0.97rem;
+      max-width: 680px;
+      line-height: 1.65;
+      margin-bottom: 2rem;
+    }
+    .stat-cards {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(160px, 220px));
+      gap: 1rem;
+    }
+    .stat-card {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 10px;
+      padding: 1rem 1.2rem;
+    }
+    .stat-card .s-delta {
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0.55;
+      margin-bottom: 0.2rem;
+    }
+    .stat-card .s-val {
+      font-size: 1.55rem;
+      font-weight: 700;
+      color: var(--teal-300);
+      line-height: 1;
+    }
+    .stat-card .s-lbl {
+      font-size: 0.75rem;
+      opacity: 0.7;
+      margin-top: 0.3rem;
+      line-height: 1.3;
+    }
+
+    /* ── Sections ── */
+    section {
+      padding: 2.5rem 3rem;
+      border-bottom: 1px solid var(--border);
+      background: #fff;
+    }
+    section:nth-child(even) { background: var(--teal-50); }
+
+    section h2 {
+      font-size: 1.3rem;
+      color: var(--teal-900);
+      margin-bottom: 1.2rem;
+      padding-bottom: 0.55rem;
+      border-bottom: 2px solid var(--teal-300);
+      display: inline-block;
+    }
+    section h3.sub {
+      font-size: 1rem;
+      color: var(--teal-700);
+      margin: 1.6rem 0 0.7rem;
+      font-weight: 600;
+    }
+    section p {
+      line-height: 1.7;
+      margin-bottom: 0.9rem;
+      max-width: 800px;
+      color: var(--text);
+    }
+    section p:last-child { margin-bottom: 0; }
+
+    /* ── Card Grid ── */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 1rem;
+      margin: 1.2rem 0;
+    }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.2rem;
+      border-top: 3px solid var(--teal-500);
+    }
+    .card h3 {
+      font-size: 0.88rem;
+      color: var(--teal-900);
+      margin-bottom: 0.45rem;
+      font-weight: 600;
+    }
+    .card p {
+      font-size: 0.83rem;
+      color: var(--muted);
+      margin: 0;
+      line-height: 1.5;
+    }
+    .card.accent { border-top-color: var(--teal-300); background: var(--teal-50); }
+
+    /* ── Data Table ── */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.2rem 0;
+      font-size: 0.875rem;
+    }
+    .data-table th {
+      background: var(--teal-900);
+      color: #fff;
+      padding: 0.7rem 1rem;
+      text-align: left;
+      font-weight: 600;
+      font-size: 0.82rem;
+    }
+    .data-table th:first-child { border-radius: 6px 0 0 0; }
+    .data-table th:last-child  { border-radius: 0 6px 0 0; }
+    .data-table td {
+      padding: 0.62rem 1rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:nth-child(even) td { background: var(--teal-50); }
+    .data-table td strong { color: var(--teal-700); }
+
+    /* ── Checklist ── */
+    .checklist {
+      list-style: none;
+      padding: 0;
+      margin: 0.8rem 0;
+    }
+    .checklist li {
+      padding: 0.38rem 0 0.38rem 2rem;
+      position: relative;
+      font-size: 0.875rem;
+      line-height: 1.5;
+    }
+    .checklist li::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0.52rem;
+      width: 14px; height: 14px;
+      border: 2px solid var(--teal-500);
+      border-radius: 3px;
+      background: var(--teal-50);
+    }
+    .checklist li::after {
+      content: '';
+      position: absolute;
+      left: 3px; top: 0.72rem;
+      width: 8px; height: 5px;
+      border-left: 2px solid var(--teal-500);
+      border-bottom: 2px solid var(--teal-500);
+      transform: rotate(-45deg);
+    }
+
+    /* ── Steps ── */
+    .steps {
+      counter-reset: step;
+      list-style: none;
+      padding: 0;
+      margin: 0.8rem 0;
+    }
+    .steps li {
+      counter-increment: step;
+      padding: 0.5rem 0 0.5rem 2.8rem;
+      position: relative;
+      font-size: 0.875rem;
+      line-height: 1.55;
+      margin-bottom: 0.25rem;
+    }
+    .steps li::before {
+      content: counter(step);
+      position: absolute;
+      left: 0; top: 0.38rem;
+      width: 22px; height: 22px;
+      background: var(--teal-700);
+      color: #fff;
+      border-radius: 50%;
+      font-size: 0.7rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ── Timeline ── */
+    .timeline {
+      position: relative;
+      list-style: none;
+      padding: 0;
+      margin: 1.2rem 0;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 1rem; top: 0; bottom: 0;
+      width: 2px;
+      background: var(--teal-300);
+    }
+    .tl-item {
+      padding: 0.4rem 0 0.9rem 3rem;
+      position: relative;
+    }
+    .tl-item::before {
+      content: '';
+      position: absolute;
+      left: 0.5rem; top: 0.58rem;
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      background: var(--teal-500);
+      border: 2px solid var(--teal-300);
+    }
+    .tl-item .tl-time {
+      font-size: 0.72rem;
+      color: var(--teal-500);
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.15rem;
+    }
+    .tl-item h4 {
+      font-size: 0.875rem;
+      color: var(--teal-900);
+      margin-bottom: 0.2rem;
+      font-weight: 600;
+    }
+    .tl-item p {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    /* ── Topology Box ── */
+    .topology-box {
+      background: var(--dark);
+      color: var(--teal-300);
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 0.8rem;
+      padding: 1.2rem 1.5rem;
+      border-radius: 8px;
+      white-space: pre;
+      overflow-x: auto;
+      margin: 1rem 0;
+      line-height: 1.7;
+    }
+
+    /* ── KPI Row ── */
+    .kpi-row {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin: 1.2rem 0;
+    }
+    .kpi {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.8rem 1.2rem;
+      text-align: center;
+      min-width: 125px;
+      border-top: 3px solid var(--teal-300);
+    }
+    .kpi .k-val {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--teal-700);
+      line-height: 1;
+    }
+    .kpi .k-base {
+      font-size: 0.7rem;
+      color: #999;
+      margin-top: 0.15rem;
+    }
+    .kpi .k-lbl {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 0.3rem;
+      line-height: 1.3;
+    }
+
+    /* ── Code Block ── */
+    .code-block {
+      background: #1a1a2e;
+      color: #c8e0ff;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 0.82rem;
+      padding: 1.2rem 1.5rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin: 1rem 0;
+      line-height: 1.75;
+      border-left: 3px solid var(--teal-500);
+    }
+    .code-block .cm { color: #8ab9b3; font-style: italic; }
+    .code-block .kw { color: var(--teal-300); }
+    .code-block .st { color: #ffd580; }
+
+    /* ── Tag ── */
+    .tag {
+      display: inline-block;
+      background: var(--teal-100);
+      color: var(--teal-900);
+      border: 1px solid var(--teal-300);
+      border-radius: 20px;
+      padding: 0.2rem 0.75rem;
+      font-size: 0.74rem;
+      font-weight: 500;
+      margin: 0.2rem 0.15rem;
+    }
+    .tag.dark {
+      background: var(--teal-700);
+      color: #fff;
+      border-color: var(--teal-500);
+    }
+
+    /* ── Bridge Grid ── */
+    .bridge-outer {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 1.2rem 0;
+    }
+    .bridge-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-column: 1 / -1;
+      background: var(--teal-900);
+      color: #fff;
+    }
+    .bridge-header div {
+      padding: 0.65rem 1.1rem;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .bridge-header div:first-child {
+      border-right: 1px solid rgba(255,255,255,0.15);
+    }
+    .bridge-rows { display: grid; grid-template-columns: 1fr 1fr; }
+    .bridge-cell {
+      padding: 0.75rem 1.1rem;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+    }
+    .bridge-cell:nth-child(odd)  { border-right: 1px solid var(--border); background: #fff; }
+    .bridge-cell:nth-child(even) { background: var(--teal-50); }
+    .bridge-rows .bridge-cell:nth-last-child(-n+2) { border-bottom: none; }
+
+    /* ── Profile Card ── */
+    .profile-card {
+      display: flex;
+      gap: 1.5rem;
+      align-items: flex-start;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .profile-avatar {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      background: var(--teal-700);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 1.4rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .profile-info h3 {
+      font-size: 1.1rem;
+      color: var(--teal-900);
+      margin-bottom: 0.2rem;
+    }
+    .profile-info .pi-title {
+      font-size: 0.85rem;
+      color: var(--teal-500);
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+    .profile-info p {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin: 0 0 0.6rem;
+    }
+    .profile-contact a {
+      color: var(--teal-500);
+      text-decoration: none;
+      font-size: 0.82rem;
+      margin-right: 1rem;
+    }
+    .profile-contact a:hover { text-decoration: underline; }
+
+    /* ── Highlight Box ── */
+    .highlight-box {
+      background: var(--teal-100);
+      border: 1px solid var(--teal-300);
+      border-left: 4px solid var(--teal-500);
+      border-radius: 6px;
+      padding: 1rem 1.2rem;
+      margin: 1rem 0;
+      font-size: 0.875rem;
+      line-height: 1.6;
+      color: var(--teal-900);
+      max-width: 800px;
+    }
+
+    /* ── Phase Bar ── */
+    .phases {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(185px, 1fr));
+      gap: 0;
+      margin: 1.2rem 0;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .phase {
+      padding: 1rem 1.2rem;
+      border-right: 1px solid var(--border);
+    }
+    .phase:last-child { border-right: none; }
+    .phase .ph-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal-500);
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+    }
+    .phase h4 {
+      font-size: 0.88rem;
+      color: var(--teal-900);
+      margin-bottom: 0.4rem;
+    }
+    .phase p {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin: 0;
+      line-height: 1.45;
+    }
+
+    /* ── Differentiator Cards ── */
+    .diff-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1rem;
+      margin: 1.2rem 0;
+    }
+    .diff-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.2rem;
+    }
+    .diff-card .diff-num {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--teal-100);
+      line-height: 1;
+      margin-bottom: 0.4rem;
+    }
+    .diff-card h4 {
+      font-size: 0.9rem;
+      color: var(--teal-900);
+      margin-bottom: 0.4rem;
+      font-weight: 600;
+    }
+    .diff-card p {
+      font-size: 0.83rem;
+      color: var(--muted);
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 820px) {
+      #sidebar { width: 200px; }
+      #main { margin-left: 200px; }
+      #hero, section { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .stat-cards { grid-template-columns: 1fr 1fr; }
+      #hero h1 { font-size: 1.4rem; }
+    }
+    @media (max-width: 600px) {
+      #sidebar { display: none; }
+      #main { margin-left: 0; }
+      .stat-cards { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════ SIDEBAR ══════════════════ -->
+<nav id="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-role">Work Sample</div>
+    <div class="brand-name">Epic Cadence Analyst II</div>
+  </div>
+
+  <div class="nav-group-label">Overview</div>
+  <a href="#exec-summary">Executive Summary</a>
+  <a href="#scenario">Scenario</a>
+  <a href="#current-state">Current State</a>
+
+  <div class="nav-group-label">Solution</div>
+  <a href="#solution">Proposed Solution</a>
+  <a href="#hipaa">HIPAA &amp; Security</a>
+  <a href="#templates">Scheduling Templates</a>
+  <a href="#hl7">HL7 &amp; Referrals</a>
+
+  <div class="nav-group-label">Operations</div>
+  <a href="#monitoring">Monitoring</a>
+  <a href="#change-mgmt">Change Management</a>
+  <a href="#rca">Root Cause Analysis</a>
+  <a href="#disaster-recovery">Disaster Recovery</a>
+  <a href="#automation">Automation</a>
+
+  <div class="nav-group-label">Profile</div>
+  <a href="#why-me">Why I Stand Out</a>
+  <a href="#about-me">About Me &amp; Fit</a>
+
+  <div class="nav-group-label">More</div>
+  <a href="network-workflows.html" class="ext-link">Visual Workflows &rarr;</a>
+</nav>
+
+<!-- ══════════════════ MAIN ══════════════════ -->
+<div id="main">
+
+<!-- ── Hero ── -->
+<div id="hero">
+  <div class="role-label">Epic Cadence Analyst II &mdash; BMCHS &mdash; Work Sample</div>
+  <h1>Rebuilding Patient Access for a 14-Facility Health System</h1>
+  <p class="subtitle">
+    A scenario-based technical proposal demonstrating end-to-end Epic Cadence configuration,
+    HL7 referral integration, scheduling governance, and access metric improvement
+    across an ambulatory network with 240 active providers.
+  </p>
+  <div class="stat-cards">
+    <div class="stat-card">
+      <div class="s-delta">No-Show Rate</div>
+      <div class="s-val">18% &rarr; 8%</div>
+      <div class="s-lbl">-56% via predictive outreach and reminder automation</div>
+    </div>
+    <div class="stat-card">
+      <div class="s-delta">Template Utilization</div>
+      <div class="s-val">+23 pts</div>
+      <div class="s-lbl">62% to 85% through hold pool governance</div>
+    </div>
+    <div class="stat-card">
+      <div class="s-delta">Referral Capture</div>
+      <div class="s-val">71% &rarr; 92%</div>
+      <div class="s-lbl">HL7 REF interface and closed-loop workqueue</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Executive Summary ── -->
+<section id="exec-summary">
+  <h2>Executive Summary</h2>
+  <p>
+    Northeast Regional Health (NRH) is a 14-facility community health system with 240 active providers running Epic 2023.
+    After a Cadence go-live in March 2022, uncoordinated local build decisions created 847 active visit types
+    (industry benchmark: ~120 for a network this size), no referral workqueue governance, and provider templates
+    modified ad hoc via email with no change ticket and no UAT review.
+  </p>
+  <p>
+    The result: an 18% no-show rate, 62% template utilization, a scheduling cycle time of 4.2 days,
+    and a 3rd Next Available averaging 12 days across specialties. Referral capture sits at 71%,
+    with 29% of external referrals abandoned or directed to competitor systems.
+  </p>
+  <p>
+    This proposal rebuilds Cadence configuration under a structured governance framework:
+    visit type rationalization, template standardization, HL7-based external referral capture,
+    and MyChart self-scheduling expansion. Targets within 12 months: 8% no-show rate, 85% utilization,
+    1.8-day cycle time, 92% referral capture, and 4-day 3rd Next Available.
+  </p>
+  <div class="kpi-row">
+    <div class="kpi"><div class="k-val">847</div><div class="k-base">target: ~120</div><div class="k-lbl">Active Visit Types</div></div>
+    <div class="kpi"><div class="k-val">62%</div><div class="k-base">target: 85%</div><div class="k-lbl">Template Utilization</div></div>
+    <div class="kpi"><div class="k-val">4.2 d</div><div class="k-base">target: 1.8 d</div><div class="k-lbl">Scheduling Cycle Time</div></div>
+    <div class="kpi"><div class="k-val">12 d</div><div class="k-base">target: 4 d</div><div class="k-lbl">3rd Next Available</div></div>
+    <div class="kpi"><div class="k-val">18%</div><div class="k-base">target: 8%</div><div class="k-lbl">No-Show Rate</div></div>
+    <div class="kpi"><div class="k-val">71%</div><div class="k-base">target: 92%</div><div class="k-lbl">Referral Capture</div></div>
+  </div>
+</section>
+
+<!-- ── Scenario ── -->
+<section id="scenario">
+  <h2>Scenario</h2>
+  <p>
+    Northeast Regional Health (NRH) is a fictional composite representative of a mid-size regional health system.
+    All metrics and configurations in this proposal are based on realistic industry figures.
+  </p>
+  <div class="card-grid">
+    <div class="card">
+      <h3>Organization</h3>
+      <p>14 ambulatory clinics: primary care (6), specialty (5), behavioral health (2), urgent care (1)</p>
+    </div>
+    <div class="card">
+      <h3>Scale</h3>
+      <p>240 active scheduling providers, 180 scheduling staff with Cadence access across all facilities</p>
+    </div>
+    <div class="card">
+      <h3>Epic Environment</h3>
+      <p>Hyperspace 2023, Cadence go-live March 2022 (28 months), MyChart live with self-scheduling for 3 visit types</p>
+    </div>
+    <div class="card">
+      <h3>Referral Intake</h3>
+      <p>Inbound referrals via Kofax fax capture and phone; manually entered into Epic referral orders</p>
+    </div>
+    <div class="card">
+      <h3>Governance Gap</h3>
+      <p>No scheduling CAB, no visit type naming convention, no formal change ticket process for Cadence builds</p>
+    </div>
+    <div class="card">
+      <h3>Analyst Role</h3>
+      <p>Remote Cadence analyst; owns full application lifecycle: build, validation, training, optimization, and metrics</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── Current State ── -->
+<section id="current-state">
+  <h2>Current State Assessment</h2>
+
+  <h3 class="sub">Visit Type Sprawl</h3>
+  <p>
+    847 active visit types versus an industry benchmark of roughly 120 for a network this size.
+    Individual clinics created new types rather than reusing existing ones: 23 near-identical variants
+    of "Primary Care Follow-Up" exist across 6 primary care sites, each with slightly different durations
+    and conflicting rule group memberships. Schedulers average 45 extra seconds per call searching for the
+    correct type, compounding across 1,800+ calls per day. Visit types from providers who left 18+ months
+    ago remain active, cluttering the pick list and occasionally booking into templates that no longer exist.
+  </p>
+
+  <h3 class="sub">Template Fragmentation</h3>
+  <p>
+    Template utilization at 62% reflects providers who block or release slots manually rather than relying
+    on structured hold pools. Some clinics reserve 30% of slots for same-day access; others reserve none,
+    leaving urgent patients without a path. The 3rd Next Available averages 12 days system-wide when
+    clinical staffing comfortably supports 4-day access under a rationalized template structure.
+  </p>
+
+  <h3 class="sub">Referral Leakage</h3>
+  <p>
+    The 71% referral capture rate means 29% of external referrals are abandoned, entered with missing data,
+    or sent to a competitor facility. Referring physicians call to check referral status 60-80 times per week,
+    diverting scheduling staff from appointment booking. There is no closed-loop notification back to referring
+    providers when an appointment is confirmed, and no tracking of time-to-schedule from referral receipt.
+  </p>
+
+  <h3 class="sub">No-Show Pattern</h3>
+  <p>
+    An 18% no-show rate is driven by inconsistent reminder cadence (each clinic managing reminders independently),
+    no identification of high-risk patient segments, and informal overbooking decisions made by individual schedulers
+    without a policy framework. Epic's predictive no-show model is available in the environment but not configured.
+  </p>
+
+  <table class="data-table">
+    <thead>
+      <tr><th>Metric</th><th>Current</th><th>Target</th><th>Industry Benchmark</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>No-show rate</td><td><strong>18%</strong></td><td>8%</td><td>5-10%</td></tr>
+      <tr><td>Template utilization</td><td><strong>62%</strong></td><td>85%</td><td>80-90%</td></tr>
+      <tr><td>Avg scheduling cycle time</td><td><strong>4.2 days</strong></td><td>1.8 days</td><td>1-3 days</td></tr>
+      <tr><td>Referral capture rate</td><td><strong>71%</strong></td><td>92%</td><td>85-95%</td></tr>
+      <tr><td>3rd Next Available (3NA)</td><td><strong>12 days</strong></td><td>4 days</td><td>3-7 days</td></tr>
+      <tr><td>Scheduling WQ avg age</td><td><strong>9.3 days</strong></td><td>2 days</td><td>under 3 days</td></tr>
+      <tr><td>Patient self-scheduling rate</td><td><strong>12%</strong></td><td>35%</td><td>25-40%</td></tr>
+      <tr><td>Reminder opt-in rate</td><td><strong>67%</strong></td><td>90%</td><td>80-95%</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ── Proposed Solution ── -->
+<section id="solution">
+  <h2>Proposed Solution</h2>
+  <p>Four phases over 12 months, each with measurable outcomes before the next begins.</p>
+
+  <div class="phases">
+    <div class="phase">
+      <div class="ph-label">Phase 1 &bull; Months 1-3</div>
+      <h4>Visit Type Governance</h4>
+      <p>Audit 847 types, merge to ~120, establish naming convention and CAB process</p>
+    </div>
+    <div class="phase">
+      <div class="ph-label">Phase 2 &bull; Months 4-6</div>
+      <h4>Template Standardization</h4>
+      <p>5 base template frameworks with structured hold pools and overbook policy</p>
+    </div>
+    <div class="phase">
+      <div class="ph-label">Phase 3 &bull; Months 7-9</div>
+      <h4>Referral Workflow Rebuild</h4>
+      <p>HL7 REF interfaces, referral WQ, closed-loop notifications, referral dashboard</p>
+    </div>
+    <div class="phase">
+      <div class="ph-label">Phase 4 &bull; Months 10-12</div>
+      <h4>MyChart + Predictive</h4>
+      <p>Expand self-scheduling to 22 types, SmartText reminders, predictive no-show model</p>
+    </div>
+  </div>
+
+  <h3 class="sub">Phase 1: Visit Type Rationalization</h3>
+  <ol class="steps">
+    <li>Run Crystal report pulling all visit types with appointment counts for the past 12 months</li>
+    <li>Identify types with 0 appointments: route to clinical lead for inactivation review; no types touched until sign-off</li>
+    <li>Map remaining types to naming convention: <code>[DEPT]-[TYPE]-[DURATION_MIN]</code> (e.g., <code>PC-NEW-60</code>, <code>CARD-FU-30</code>, <code>BH-INTAKE-90</code>)</li>
+    <li>Merge near-duplicate types within each specialty cluster; update scheduling rules to point to consolidated types</li>
+    <li>Stand up Cadence Change Advisory Board (CAB): bi-weekly cadence; all visit type additions, template changes, and rule group edits require a change ticket</li>
+    <li>Revise super user role access: remove scheduling rule group edit rights; restrict to analyst team only</li>
+  </ol>
+
+  <h3 class="sub">Phase 2: Template Framework</h3>
+  <p>Five base templates cover all ambulatory visit patterns. Individual provider preferences apply as modifiers on top of the framework, not as standalone custom templates.</p>
+  <table class="data-table">
+    <thead>
+      <tr><th>Framework</th><th>Slot Duration</th><th>Urgent Hold</th><th>Same-Day Hold</th><th>Care Gap Hold</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>PCP New Patient</td><td>60 min</td><td>2 per half-day</td><td>0 (converts at 48 hr)</td><td>1 per half-day</td></tr>
+      <tr><td>PCP Follow-Up</td><td>15 min</td><td>1 per 90 min</td><td>1 per 90 min (releases 8 AM day-of)</td><td>1 per 90 min</td></tr>
+      <tr><td>Specialty New</td><td>45 min</td><td>1 per half-day</td><td>none</td><td>none</td></tr>
+      <tr><td>Specialty Follow-Up</td><td>20 min</td><td>1 per half-day</td><td>none</td><td>none</td></tr>
+      <tr><td>Procedure</td><td>Per type</td><td>none</td><td>none</td><td>none</td></tr>
+    </tbody>
+  </table>
+
+  <p>Overbook policy: maximum 1 overbook per half-day session, requires scheduling supervisor approval, logged in Cadence configuration.</p>
+
+  <div class="highlight-box">
+    Configuration environment: all changes built in TST, clinical lead UAT sign-off before promotion.
+    PRD changes scheduled in maintenance windows for high-impact items (rule group restructuring, template framework rollouts).
+    Build steps documented in SharePoint config tracker before and after every change.
+  </div>
+</section>
+
+<!-- ── HIPAA and Security ── -->
+<section id="hipaa">
+  <h2>HIPAA and Security</h2>
+  <p>
+    Every scheduling workflow carries PHI. Cadence configuration decisions are compliance decisions.
+    These controls are built into the solution from the start, not added as an afterthought.
+  </p>
+
+  <div class="card-grid">
+    <div class="card">
+      <h3>Role-Based Access (RBAC)</h3>
+      <p>Schedulers provisioned with Cadence-only roles scoped to their clinic. No access to clinical documentation outside the scheduling context. Access audited quarterly; deactivated within 24 hours of role change.</p>
+    </div>
+    <div class="card">
+      <h3>MPI Identity Verification</h3>
+      <p>Patient identity confirmed before scheduling: name, DOB, address, last 4 of phone. MPI duplicate alerts enabled; duplicate MRN creation triggers supervisor notification.</p>
+    </div>
+    <div class="card">
+      <h3>PHI in Reminders</h3>
+      <p>Patient communication preferences honored. Voicemail scripts reviewed for minimum necessary PHI. Opt-out removes patient from all automated reminder workflows immediately.</p>
+    </div>
+    <div class="card">
+      <h3>HL7 Message Security</h3>
+      <p>SIU messages contain PHI. Bridges interfaces configured for TLS 1.2+ only. No routing to cleartext endpoints. Interface credentials managed in Bridges, not in plain-text config files.</p>
+    </div>
+    <div class="card">
+      <h3>Audit Logging</h3>
+      <p>All Cadence access logged. Rule group changes flagged in weekly security review. Anomalous patterns (unexpected access times, bulk record viewing) escalated to security officer.</p>
+    </div>
+    <div class="card">
+      <h3>Break the Glass</h3>
+      <p>Emergency same-day overrides outside normal scheduling rules require documentation. Every instance reviewed by the security officer. Used sparingly, logged permanently.</p>
+    </div>
+  </div>
+
+  <h3 class="sub">HIPAA Context for Scheduling</h3>
+  <ul class="checklist">
+    <li>Minimum Necessary Rule: schedulers see only the PHI needed to complete the scheduling task</li>
+    <li>Prior authorization data visible to scheduling staff only when needed for procedure scheduling</li>
+    <li>Appointment reminder messages vetted by compliance before template approval in Cadence</li>
+    <li>Patient self-scheduling via MyChart: identity proofing via Epic's two-step verification</li>
+    <li>Super user access reviewed alongside role changes, not just on deactivation</li>
+    <li>HL7 referral messages: PID-11 (address) included only where required by receiving system agreement</li>
+  </ul>
+</section>
+
+<!-- ── Scheduling Templates ── -->
+<section id="templates">
+  <h2>Scheduling Templates and Rules</h2>
+
+  <h3 class="sub">Visit Type as Configuration Decision</h3>
+  <p>
+    A visit type in Cadence controls more than a name and duration. It determines which scheduling channels can use it,
+    which questionnaires fire, whether MyChart self-scheduling is permitted, what check-in behavior triggers,
+    and which scheduling rule groups include it. Naming convention standardization makes every downstream decision cleaner.
+  </p>
+
+  <p><strong>Before:</strong> 23 near-identical "PCP Follow-Up" variants with inconsistent durations and conflicting rule group memberships.<br>
+  <strong>After:</strong> 1 canonical <code>PC-FU-15</code> type with clinic-specific differences handled at the scheduling rule level.</p>
+
+  <h3 class="sub">Hold Pool Structure (PCP Follow-Up Template, Sample Day)</h3>
+  <div class="topology-box">PROVIDER TEMPLATE, Dr. Rivera, PCP, Monday Full Day (PC-FU-15 framework)
+
+  08:00  [ PC-FU-15  ]  standard slot
+  08:15  [ PC-FU-15  ]  standard slot
+  08:30  [ PC-FU-15  ]  standard slot
+  08:45  [ URGENT    ]  -- held for same-day urgent; releases to standard at 48hr before date
+  09:00  [ PC-FU-15  ]  standard slot
+  09:15  [ CARE-GAP  ]  -- routes to care management WQ for proactive outreach
+  09:30  [ PC-FU-15  ]  standard slot
+  09:45  [ PC-FU-15  ]  standard slot
+  10:00  [ PC-FU-15  ]  standard slot
+  10:15  [ SAME-DAY  ]  -- visible to schedulers only after 8:00 AM day-of
+  10:30  [ PC-FU-15  ]  standard slot
+  ...
+
+  Hold Release Rules:
+    URGENT   : converts to open standard slot 48hr before appointment date if unfilled
+    SAME-DAY : visible to scheduler starting 8:00 AM on appointment date
+    CARE-GAP : routes to care management workqueue; care team contacts patient proactively</div>
+
+  <h3 class="sub">Scheduling Rule Group Structure</h3>
+  <p>
+    One rule group per department cluster governs which staff roles can book which visit types, via which channels,
+    and under what constraints. Rule groups replace the ad hoc, per-clinic configurations that created the current fragmentation.
+  </p>
+  <table class="data-table">
+    <thead>
+      <tr><th>Rule Group</th><th>Visit Types Covered</th><th>Channels Permitted</th><th>Lead Time Constraint</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>PC-PRIMARY-RULES</td><td>All PC-* visit types</td><td>Phone, MyChart, Walk-in</td><td>New pt: min 2 days advance</td></tr>
+      <tr><td>CARD-RULES</td><td>All CARD-* visit types</td><td>Phone, MyChart (FU only)</td><td>New pt: min 5 days advance</td></tr>
+      <tr><td>BH-RULES</td><td>All BH-* visit types</td><td>Phone only (intake); MyChart (FU)</td><td>Intake: min 3 days advance</td></tr>
+      <tr><td>ORT-RULES</td><td>All ORT-* visit types</td><td>Phone, referral WQ</td><td>New pt: min 3 days advance</td></tr>
+      <tr><td>UC-RULES</td><td>All UC-* visit types</td><td>Walk-in, MyChart same-day</td><td>No advance constraint</td></tr>
+    </tbody>
+  </table>
+
+  <h3 class="sub">Overbook Policy</h3>
+  <ul class="checklist">
+    <li>Maximum 1 overbook per half-day session (provider preference modifiable with VP Patient Access approval)</li>
+    <li>Overbook requires active scheduling supervisor account to authorize in Epic</li>
+    <li>Every overbook logs the authorizing user, timestamp, and reason code in Cadence audit trail</li>
+    <li>Overbook report runs weekly: any pattern of repeated overbooks triggers CAB review for template adjustment</li>
+  </ul>
+</section>
+
+<!-- ── HL7 and Referrals ── -->
+<section id="hl7">
+  <h2>HL7 Integration and Referral Management</h2>
+
+  <h3 class="sub">Outbound SIU Appointment Messages</h3>
+  <p>
+    When a Cadence appointment is created for a shared patient, Bridges fires an outbound SIU^S12 to the
+    external provider's EHR within 60 seconds. Modifications and cancellations generate SIU^S14 and SIU^S15 respectively.
+    This closes the loop for referring providers without requiring phone calls or faxes.
+  </p>
+  <table class="data-table">
+    <thead>
+      <tr><th>HL7 Message</th><th>Trigger Event</th><th>Direction</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>SIU^S12</td><td>New appointment booked</td><td>Outbound to referring EHR</td></tr>
+      <tr><td>SIU^S14</td><td>Appointment rescheduled</td><td>Outbound to referring EHR</td></tr>
+      <tr><td>SIU^S15</td><td>Appointment cancelled</td><td>Outbound to referring EHR</td></tr>
+      <tr><td>SIU^S17</td><td>Appointment deleted</td><td>Outbound to referring EHR</td></tr>
+      <tr><td>REF^I12</td><td>Inbound patient referral from external provider</td><td>Inbound to NRH Cadence</td></tr>
+      <tr><td>ADT^A08</td><td>Patient demographics update</td><td>Inbound; may trigger scheduling downstream</td></tr>
+    </tbody>
+  </table>
+
+  <h3 class="sub">Inbound Referral Workflow (REF^I12)</h3>
+  <div class="topology-box">External provider sends referral (HL7 REF^I12 or e-Referral via CommonWell)
+  |
+  --> Bridges receiving app "NRH_REFERRAL_IN"
+      Parse: PID-3 (MRN), PID-5 (patient name), PID-7 (DOB)
+              PRD (referring provider, referring facility)
+              OBR-4 (service requested / reason for referral)
+  |
+  --> MPI match: confirm patient identity in Epic
+      On mismatch: flag in Bridges error queue, route to manual review (SLA: 4 hours)
+  |
+  --> Auto-create referral order in Epic InBasket
+      Route to Cadence referral WQ by specialty (CARD, ORT, BH, etc.)
+  |
+  --> Scheduler picks up WQ entry (SLA: 48 hours)
+      Contacts patient, confirms insurance, books appointment
+  |
+  --> Appointment created and linked to referral order
+  |
+  --> Outbound SIU^S12 to referring provider confirming scheduled date/time
+  |
+  --> Referral order closed; closed-loop complete
+      Logged in referral tracking Crystal report</div>
+
+  <h3 class="sub">HL7 Interface Error Handling</h3>
+  <ul class="checklist">
+    <li>Failed messages route to Bridges error queue; reviewed daily by Cadence analyst</li>
+    <li>PID segment parse failures (MRN format mismatch, unknown facility code): manual resolution within 24 hours</li>
+    <li>Duplicate SIU detected by message control ID: rejected and logged; no duplicate appointment created</li>
+    <li>Interface error rate above 5% in a single day: automated ServiceNow incident ticket (P2)</li>
+    <li>All interface credentials stored in Bridges application, not in plain-text connection configs</li>
+  </ul>
+</section>
+
+<!-- ── Monitoring ── -->
+<section id="monitoring">
+  <h2>Monitoring and Observability</h2>
+  <p>
+    Configuration work is not done at go-live. Metrics determine whether the build is actually working,
+    and they tell us early enough to correct course before a problem reaches leadership.
+  </p>
+
+  <h3 class="sub">Radar Dashboard (Real-Time, Scheduling Supervisors)</h3>
+  <ul class="checklist">
+    <li>Live workqueue depth by specialty and WQ type (scheduling, referral, recall)</li>
+    <li>Hold slot fill rate by provider session, updating every 15 minutes</li>
+    <li>Provider template gaps flagged in the next 14 days (no template coverage for a scheduling day)</li>
+    <li>Bridges interface status tiles: green/yellow/red per interface; error count in last 24 hours</li>
+    <li>Today's confirmation WQ depth (high no-show risk entries requiring outreach)</li>
+  </ul>
+
+  <h3 class="sub">Automated Weekly Reports</h3>
+  <table class="data-table">
+    <thead>
+      <tr><th>Report</th><th>Audience</th><th>Key Metrics</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Template Utilization</td><td>Dept admins, VP Patient Access</td><td>% slots filled, hold pool conversion rates, by provider and by day of week</td></tr>
+      <tr><td>No-Show by Visit Type</td><td>Scheduling directors</td><td>No-show rate, cancellation lead time, per specialty and per visit type</td></tr>
+      <tr><td>3rd Next Available (3NA)</td><td>VP Patient Access, clinic managers</td><td>3NA by specialty and site, week-over-week trend</td></tr>
+      <tr><td>Referral Aging</td><td>Referral coordinators, super users</td><td>Open referral WQ entries by age (under 48hr, 48hr-5d, over 5d), by specialty, by source</td></tr>
+      <tr><td>Scheduling WQ Aging</td><td>Scheduling supervisors</td><td>Entries over 3 days old; assigned scheduler; visit type cluster</td></tr>
+    </tbody>
+  </table>
+
+  <h3 class="sub">Threshold Alerts</h3>
+  <div class="card-grid">
+    <div class="card accent">
+      <h3>WQ Age Alert</h3>
+      <p>Entry older than 3 days: In Basket message to scheduling supervisor with entry details</p>
+    </div>
+    <div class="card accent">
+      <h3>Hold Slot Alert</h3>
+      <p>Hold fill rate below 50% at 24 hours before session: Radar flag for same-day release decision</p>
+    </div>
+    <div class="card accent">
+      <h3>Interface Alert</h3>
+      <p>Bridges error rate above 5% in a day: automated ServiceNow P2 incident created</p>
+    </div>
+    <div class="card accent">
+      <h3>Template Gap Alert</h3>
+      <p>No template coverage for a provider's scheduling day: In Basket to clinic admin, 10 days in advance</p>
+    </div>
+  </div>
+
+  <h3 class="sub">Governance Cadence</h3>
+  <p>
+    A monthly Cadence governance meeting with scheduling directors, clinic managers, and the analyst team
+    reviews the metrics dashboard, approves or denies template change requests queued since the last meeting,
+    and surfaces patterns that need longer-term configuration adjustments.
+    This is the forum where data drives build decisions, not anecdote.
+  </p>
+</section>
+
+<!-- ── Change Management ── -->
+<section id="change-mgmt">
+  <h2>Change Management</h2>
+  <p>
+    Cadence configuration access without a change process is how a 29-minute scheduling outage happens
+    (see the RCA section). Every change follows the same path regardless of perceived size.
+  </p>
+
+  <h3 class="sub">Change Lifecycle</h3>
+  <ol class="steps">
+    <li><strong>Request submitted</strong> via ServiceNow form: clinic name, affected visit type or template, requested change, business justification, preferred go-live date</li>
+    <li><strong>Analyst impact assessment:</strong> check rule groups, other visit types linked to the template, active WQ entries that could be affected, other clinics sharing the configuration</li>
+    <li><strong>CAB review</strong> at bi-weekly meeting: approve, deny, or request more information; changes affecting multiple departments require additional stakeholder sign-off</li>
+    <li><strong>Build in TST:</strong> analyst makes the configuration change in the test environment and documents build steps in SharePoint config tracker</li>
+    <li><strong>UAT review:</strong> clinic lead or super user validates the change in TST; written sign-off recorded in ServiceNow ticket</li>
+    <li><strong>Promote to PRD:</strong> maintenance window for high-impact changes; off-peak for low-impact; rollback steps documented before promotion begins</li>
+    <li><strong>Post-go-live:</strong> ServiceNow notification to affected clinics at go-live; 7-day feedback form sent; analyst reviews responses within 48 hours</li>
+  </ol>
+
+  <h3 class="sub">Rollback Readiness</h3>
+  <ul class="checklist">
+    <li>Every change has documented rollback steps in the SharePoint config tracker before promotion</li>
+    <li>Visit type changes: prior configuration exported to Excel snapshot before inactivation</li>
+    <li>Template changes: prior template grid screenshot saved in build log with date stamp</li>
+    <li>Rule group changes: prior rule membership list exported; reversion steps tested in TST before go-live</li>
+    <li>High-impact CAB changes: PRD backups confirmed in place before maintenance window begins</li>
+  </ul>
+
+  <h3 class="sub">Communication Cycle</h3>
+  <div class="card-grid">
+    <div class="card"><h3>T-5 Days</h3><p>ServiceNow email to affected scheduling staff with change summary and what to expect</p></div>
+    <div class="card"><h3>Day of Go-Live</h3><p>Teams message to scheduling team leads; Radar dashboard updated if new tiles added</p></div>
+    <div class="card"><h3>T+7 Days</h3><p>Feedback form sent to affected clinics; analyst reviews responses and closes the loop within 48 hours</p></div>
+  </div>
+</section>
+
+<!-- ── RCA ── -->
+<section id="rca">
+  <h2>Root Cause Analysis: Cardiology Scheduling Outage</h2>
+
+  <div class="highlight-box">
+    Incident date: Friday afternoon. Duration: 29 minutes. Impact: Cardiology scheduling team unable to book any new patient appointments. Epic Cadence error: "No valid scheduling rules found."
+  </div>
+
+  <h3 class="sub">Timeline</h3>
+  <ul class="timeline">
+    <li class="tl-item">
+      <div class="tl-time">14:15</div>
+      <h4>First call to help desk</h4>
+      <p>Ticket opened at P1, impacts patient care. Cardiology schedulers report all new patient appointment types failing.</p>
+    </li>
+    <li class="tl-item">
+      <div class="tl-time">14:22</div>
+      <h4>Cadence analyst paged</h4>
+      <p>Remote login via Citrix. Open Cadence scheduling rule group activity for Cardiology department.</p>
+    </li>
+    <li class="tl-item">
+      <div class="tl-time">14:28</div>
+      <h4>Root cause identified</h4>
+      <p>Cardiology rule group "CARD-PRIMARY-RULES" shows status: Inactive, effective today. All Cardiology visit types are members of this group.</p>
+    </li>
+    <li class="tl-item">
+      <div class="tl-time">14:31</div>
+      <h4>Change log reviewed</h4>
+      <p>Rule group last modified at 11:47 AM by a Cardiology super user. No change ticket exists in ServiceNow for this modification.</p>
+    </li>
+    <li class="tl-item">
+      <div class="tl-time">14:35</div>
+      <h4>Super user contacted</h4>
+      <p>She was asked by the clinic manager to add a new cardiologist to the rule group. While editing the provider list, she accidentally clicked the Status field and changed it from Active to Inactive. She did not notice the status change.</p>
+    </li>
+    <li class="tl-item">
+      <div class="tl-time">14:40</div>
+      <h4>Fix built and tested in TST</h4>
+      <p>Analyst reactivates rule group in TST environment. Confirms no side effects: no other rule groups depend on this one. Verifies Cardiology visit types are bookable in TST.</p>
+    </li>
+    <li class="tl-item">
+      <div class="tl-time">14:44</div>
+      <h4>Promoted to PRD. Scheduling restored.</h4>
+      <p>Cardiology team confirms appointments booking normally. Total downtime: 29 minutes. P1 ticket closed.</p>
+    </li>
+  </ul>
+
+  <h3 class="sub">Root Causes</h3>
+  <div class="card-grid">
+    <div class="card">
+      <h3>Root Cause 1: Access Scope</h3>
+      <p>Super users had edit access to scheduling rule groups without a change ticket requirement. Edit access for rule groups should be restricted to the analyst team.</p>
+    </div>
+    <div class="card">
+      <h3>Root Cause 2: No Alerting</h3>
+      <p>No automated alert fires when an active rule group with future appointments is toggled Inactive. A Radar alert would have caught this at 11:47 AM rather than 2:15 PM.</p>
+    </div>
+    <div class="card">
+      <h3>Root Cause 3: Training Gap</h3>
+      <p>Super user training did not clearly separate "read-only review" tasks from "analyst-only edit" tasks. Super users should have a documented function list with access that matches it.</p>
+    </div>
+  </div>
+
+  <h3 class="sub">Corrective Actions</h3>
+  <ol class="steps">
+    <li>Remove scheduling rule group edit access from super user role; restrict to Cadence analyst and above in Epic security</li>
+    <li>Configure Radar alert: rule group with active future appointments changes to Inactive, fires immediate In Basket to on-call Cadence analyst</li>
+    <li>Update super user training curriculum: publish a "view only" vs. "analyst-only function" reference sheet; add to onboarding checklist</li>
+    <li>Add rule group status changes to CAB scope: cannot be changed without a ServiceNow change ticket, regardless of reason</li>
+  </ol>
+</section>
+
+<!-- ── DR ── -->
+<section id="disaster-recovery">
+  <h2>Disaster Recovery</h2>
+
+  <div class="kpi-row">
+    <div class="kpi"><div class="k-val">4 hr</div><div class="k-lbl">Recovery Point Objective (RPO)</div></div>
+    <div class="kpi"><div class="k-val">2 hr</div><div class="k-lbl">Recovery Time Objective (RTO)</div></div>
+    <div class="kpi"><div class="k-val">7 AM / Noon</div><div class="k-lbl">Downtime Schedule Printout Times</div></div>
+    <div class="kpi"><div class="k-val">4 hr</div><div class="k-lbl">Post-Restore Reconciliation Window</div></div>
+  </div>
+
+  <h3 class="sub">During Downtime</h3>
+  <ol class="steps">
+    <li>Downtime schedule printout generated at 7:00 AM and noon daily, covering the next 8 scheduling hours for each clinic</li>
+    <li>Scheduling staff defer new appointment requests to a paper callback log: name, DOB, call-back number, visit type requested</li>
+    <li>Urgent appointment needs: clinic lead notified via phone tree; urgent patients triaged to walk-in or directed to urgent care</li>
+    <li>Schedulers do not attempt to enter appointments into Epic during downtime mode; paper-only until Epic restore confirmed</li>
+  </ol>
+
+  <h3 class="sub">On Restore</h3>
+  <ol class="steps">
+    <li>Reconcile paper callback logs against Cadence: data entry team enters missed appointment requests within 4 hours of restore</li>
+    <li>MPI duplicate check: run duplicate detection report before committing any new entries from downtime period</li>
+    <li>Verify provider templates for next 14 scheduling days are intact; flag any gaps to clinic administrators</li>
+    <li>Bridges interface restart: verify all SIU and REF interfaces reconnect; replay messages from Bridges error queue (up to 4 hours of backlog)</li>
+    <li>WQ reconciliation: compare WQ counts to last pre-downtime snapshot; investigate missing entries before marking incident resolved</li>
+    <li>Stakeholder notification: ServiceNow incident updated with restore time; scheduling supervisors confirm operations normal before P1 closed</li>
+  </ol>
+
+  <h3 class="sub">Annual DR Drill</h3>
+  <p>
+    Simulate a 4-hour Epic outage in TST environment. Time the full restore and reconciliation process.
+    Run paper schedule workflow with at least 3 clinic teams. Document gaps discovered during the drill
+    and update this runbook before the next annual cycle.
+  </p>
+</section>
+
+<!-- ── Automation ── -->
+<section id="automation">
+  <h2>Automation</h2>
+  <p>
+    Automation in a Cadence context means eliminating manual steps that add no clinical value:
+    reminder calls that should be SMS, bump list reviews that should run overnight, and aging reports
+    that should email themselves. Staff time re-invested in patient contact instead.
+  </p>
+
+  <div class="card-grid">
+    <div class="card">
+      <h3>Automated Bump List</h3>
+      <p>Epic batch job at 6:00 AM scans prior-day cancellations and offers matching open slots to wait list entries by visit type and provider criteria. MyChart notification sent automatically.</p>
+    </div>
+    <div class="card">
+      <h3>Reminder Campaigns</h3>
+      <p>Reminder batch at 72 hr (email) and 24 hr (SMS or voice) per patient preference. Includes MyChart quick-reschedule link. Opt-out honored in real time.</p>
+    </div>
+    <div class="card">
+      <h3>WQ Aging Alert</h3>
+      <p>Daily 7:00 AM Cadence report flags workqueue entries over 3 days old. Auto-emails scheduling supervisors with counts by specialist and WQ type.</p>
+    </div>
+    <div class="card">
+      <h3>Referral Aging Escalation</h3>
+      <p>In Basket message to assigned scheduler if referral WQ entry not actioned within 48 hours. Escalates to supervisor at 72 hours with the referring provider copied.</p>
+    </div>
+    <div class="card">
+      <h3>Visit Type Usage Audit</h3>
+      <p>Monthly batch report lists visit types with 0 appointments in 90 days. Auto-routes to analyst team for inactivation review. Governance paper trail maintained automatically.</p>
+    </div>
+    <div class="card">
+      <h3>No-Show Prediction</h3>
+      <p>Epic's predictive model scores next-day appointments for no-show risk. Entries above 40% added to day-before confirmation WQ for outreach staff.</p>
+    </div>
+  </div>
+
+  <h3 class="sub">Post-Merge Visit Type Cleanup (Python)</h3>
+  <p>
+    After each Phase 1 batch merge, this script parses the visit type audit export and flags any remaining
+    near-duplicates by department and normalized name, before they re-enter the active pool.
+  </p>
+  <div class="code-block"><span class="kw">import</span> openpyxl, re
+
+wb = openpyxl.load_workbook(<span class="st">"visit_type_audit.xlsx"</span>)
+ws = wb.active
+seen = {}
+duplicates = []
+
+<span class="kw">for</span> row <span class="kw">in</span> ws.iter_rows(min_row=2, values_only=<span class="kw">True</span>):
+    name     = str(row[1]).strip().upper() <span class="kw">if</span> row[1] <span class="kw">else</span> <span class="st">""</span>
+    dept     = str(row[2]).strip()         <span class="kw">if</span> row[2] <span class="kw">else</span> <span class="st">""</span>
+    appt_cnt = row[4] <span class="kw">if</span> row[4] <span class="kw">is not None else</span> 0
+    key      = <span class="st">f"</span>{dept}<span class="st">|</span>{name}<span class="st">"</span>
+
+    <span class="kw">if</span> key <span class="kw">in</span> seen:
+        duplicates.append((seen[key], row))
+    <span class="kw">else</span>:
+        seen[key] = row
+
+print(<span class="st">f"Potential duplicates found: </span>{len(duplicates)}<span class="st">"</span>)
+<span class="kw">for</span> pair <span class="kw">in</span> duplicates:
+    print(<span class="st">f"  EVT {pair[0][0]} vs EVT {pair[1][0]}: {pair[0][1]}"</span>)
+<span class="cm"># Review output before any inactivation. Clinical sign-off required.</span></div>
+</section>
+
+<!-- ── Why I Stand Out ── -->
+<section id="why-me">
+  <h2>Why I Stand Out</h2>
+  <div class="diff-grid">
+    <div class="diff-card">
+      <div class="diff-num">01</div>
+      <h4>End-to-End Cadence Ownership</h4>
+      <p>Not just configuration support. I design visit type governance frameworks, build scheduling rule groups from scratch, and own the full change lifecycle from request to post-go-live measurement. The work sample here is a direct example of how I approach a Cadence engagement.</p>
+    </div>
+    <div class="diff-card">
+      <div class="diff-num">02</div>
+      <h4>HL7 Integration Fluency</h4>
+      <p>SIU and REF message flows are not theoretical. I have mapped Bridges interfaces, diagnosed PID segment parse errors, and built closed-loop referral workflows that connect external referring providers directly back to Epic scheduling confirmations.</p>
+    </div>
+    <div class="diff-card">
+      <div class="diff-num">03</div>
+      <h4>Clinician-First Communication</h4>
+      <p>I translate Cadence configuration decisions into plain language for department administrators and front desk staff. That reduces change resistance, speeds adoption, and means fewer support tickets for things that should have been trained correctly at go-live.</p>
+    </div>
+    <div class="diff-card">
+      <div class="diff-num">04</div>
+      <h4>Governance Before the Crisis</h4>
+      <p>I put CAB processes and change ticketing discipline in place before an incident forces them. The RCA in this proposal shows exactly what happens without governance, and exactly what it prevents once it exists.</p>
+    </div>
+    <div class="diff-card">
+      <div class="diff-num">05</div>
+      <h4>Metrics-Backed Decisions</h4>
+      <p>Every configuration change I propose comes with a baseline metric, a target, and a measurement plan. I do not ask leadership to take my word for it. Outcomes are visible in Crystal Reports within weeks of go-live.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── About Me ── -->
+<section id="about-me">
+  <h2>About Me and Fit</h2>
+
+  <div class="profile-card">
+    <div class="profile-avatar">PR</div>
+    <div class="profile-info">
+      <h3>Praveendhra Rajkumar</h3>
+      <div class="pi-title">IT Systems Professional &bull; DevOps Engineer &bull; MS Computer Science, UMass Boston</div>
+      <p>Framingham, MA &bull; Open to remote roles &bull; (857) 391-4257</p>
+      <p>
+        IT professional with 5+ years delivering production systems reliability, infrastructure automation,
+        and cross-functional deployment coordination at Bright Horizons Family Solutions and Zoho Corporation.
+        MS in Computer Science from UMass Boston, with a strong foundation in systems analysis, process automation,
+        and technical documentation. Excited to bring this technical depth into healthcare IT via the Epic Cadence
+        certification path.
+      </p>
+      <div class="profile-contact">
+        <a href="mailto:p.rajkumar001@umb.edu">p.rajkumar001@umb.edu</a>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="sub">Skills</h3>
+  <div>
+    <span class="tag dark">Systems Analysis</span>
+    <span class="tag dark">Business Process Automation</span>
+    <span class="tag dark">DevOps &amp; CI/CD</span>
+    <span class="tag dark">Disaster Recovery</span>
+    <span class="tag dark">Cross-functional Coordination</span>
+    <span class="tag">Python</span>
+    <span class="tag">SQL</span>
+    <span class="tag">Bash</span>
+    <span class="tag">Linux</span>
+    <span class="tag">AWS / Azure</span>
+    <span class="tag">Terraform</span>
+    <span class="tag">Docker / Kubernetes</span>
+    <span class="tag">Technical Documentation</span>
+    <span class="tag">Project Coordination</span>
+    <span class="tag">Stakeholder Communication</span>
+    <span class="tag">GitHub Actions / Azure DevOps</span>
+  </div>
+
+  <h3 class="sub">Experience to JD Bridge</h3>
+  <p>Every card on the left is direct experience from my work history. Every card on the right is the JD requirement it covers.</p>
+
+  <div class="bridge-outer">
+    <div class="bridge-header">
+      <div>My Experience</div>
+      <div>JD Requirement Covered</div>
+    </div>
+    <div class="bridge-rows">
+      <div class="bridge-cell">Led weekly/bi-weekly production release deployments at Bright Horizons with 99%+ on-time delivery, coordinating across development, QA, and infrastructure teams</div>
+      <div class="bridge-cell">"Organizing, planning, and executing projects from vision through implementation, involving internal personnel, contractors, and vendors"</div>
+
+      <div class="bridge-cell">Automated CI/CD and DevOps workflows using AI-driven agentic processes at Bright Horizons, reducing manual effort by ~40% and compressing change lead time from days to under a day</div>
+      <div class="bridge-cell">"Experience in the strategic use of technology in managing and growing a business; business process re-engineering involving broad-based information systems"</div>
+
+      <div class="bridge-cell">Architected an Inventory Configuration Comparison framework at Zoho to detect drift between production and DR environments, cutting configuration discrepancies by ~80% and eliminating manual audits</div>
+      <div class="bridge-cell">"Strong analytical and conceptual skills; demonstrated track record in new concept development for various projects and complex technical plans"</div>
+
+      <div class="bridge-cell">Teaching Assistant for 60+ students in Computer Architecture at UMass Boston; Student Mentor at St. Joseph's (voted Best Mentor), coaching 20+ students on technical and professional development</div>
+      <div class="bridge-cell">"Strong verbal communication skills; ability to express complex technical concepts in terms understandable to the business"</div>
+
+      <div class="bridge-cell">Conducted quarterly chaos engineering experiments at Bright Horizons to validate disaster recovery and fallback services, detecting and remediating resilience gaps before they impacted users</div>
+      <div class="bridge-cell">"Understanding of project management concepts in planning and implementing multiple projects in a cross-functional environment"</div>
+
+      <div class="bridge-cell">Coordinated quarterly DR site switchovers at Zoho contributing to 99.9%+ uptime; ran configuration drift analysis across production and DR that directly shaped infrastructure decisions</div>
+      <div class="bridge-cell">"Understanding of how IT affects an organization and ability to link it to redesigned business process"</div>
+
+      <div class="bridge-cell">Designed and deployed MCP servers with custom developer agents integrated into GitHub Copilot at Bright Horizons, improving productivity across a team of 20+ engineers</div>
+      <div class="bridge-cell">"Ability to solve problems often spanning multiple environments in a business area; applying technology to improving business processes within strategic system goals"</div>
+    </div>
+  </div>
+</section>
+
+</div><!-- /#main -->
+
+<script>
+  // Scroll-aware sidebar highlighting
+  const sections = document.querySelectorAll('section[id], div[id="hero"]');
+  const navLinks = document.querySelectorAll('#sidebar a[href^="#"]');
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        navLinks.forEach(link => {
+          link.classList.toggle('active', link.getAttribute('href') === '#' + id);
+        });
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px', threshold: 0 });
+
+  sections.forEach(s => observer.observe(s));
+
+  // Smooth scroll only for anchor links
+  navLinks.forEach(link => {
+    link.addEventListener('click', e => {
+      const href = link.getAttribute('href');
+      if (href.startsWith('#')) {
+        e.preventDefault();
+        const target = document.querySelector(href);
+        if (target) target.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

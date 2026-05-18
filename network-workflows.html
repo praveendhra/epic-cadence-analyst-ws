@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <title>Epic Cadence, Visual Workflows</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --teal-900: #0d3331;
+      --teal-700: #0e6655;
+      --teal-500: #14967a;
+      --teal-300: #4ecba8;
+      --teal-100: #d0f5ec;
+      --teal-50:  #f0fdf8;
+      --dark:     #0a2826;
+      --text:     #1a2e2d;
+      --muted:    #5a7370;
+      --border:   #c8e8e0;
+      --font: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      color: var(--text);
+      background: var(--teal-50);
+      min-height: 100vh;
+    }
+
+    /* ── Page Header ── */
+    .page-header {
+      background: linear-gradient(135deg, var(--teal-900) 0%, var(--teal-700) 100%);
+      color: #fff;
+      padding: 2rem 2.5rem 1.5rem;
+    }
+    .page-header .back-link {
+      display: inline-block;
+      color: var(--teal-300);
+      text-decoration: none;
+      font-size: 0.82rem;
+      margin-bottom: 0.8rem;
+      font-weight: 600;
+    }
+    .page-header .back-link:hover { color: #fff; }
+    .page-header h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+    }
+    .page-header p {
+      opacity: 0.75;
+      font-size: 0.9rem;
+    }
+
+    /* ── Tab Nav ── */
+    .tab-nav {
+      background: var(--dark);
+      display: flex;
+      overflow-x: auto;
+      padding: 0 2.5rem;
+      gap: 0;
+      scrollbar-width: none;
+    }
+    .tab-nav::-webkit-scrollbar { display: none; }
+    .tab-btn {
+      padding: 0.9rem 1.4rem;
+      background: transparent;
+      border: none;
+      color: #8ab9b3;
+      font-size: 0.82rem;
+      font-family: var(--font);
+      font-weight: 500;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      white-space: nowrap;
+      transition: color 0.12s, border-color 0.12s;
+    }
+    .tab-btn:hover { color: #fff; }
+    .tab-btn.active {
+      color: var(--teal-300);
+      border-bottom-color: var(--teal-300);
+    }
+
+    /* ── Tab Panels ── */
+    .tab-panels { padding: 2rem 2.5rem 3rem; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    .panel-title {
+      font-size: 1.25rem;
+      color: var(--teal-900);
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .panel-desc {
+      font-size: 0.875rem;
+      color: var(--muted);
+      margin-bottom: 1.4rem;
+      max-width: 760px;
+      line-height: 1.6;
+    }
+
+    /* ── Legend ── */
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem 1.4rem;
+      margin-bottom: 1.8rem;
+      padding: 0.8rem 1.1rem;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+    .leg-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+    .leg-dot {
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      border: 2px solid;
+      flex-shrink: 0;
+    }
+
+    /* ── Flow Container ── */
+    .flow {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* ── Nodes ── */
+    .n {
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      padding: 0.75rem 1.2rem;
+      text-align: center;
+      min-width: 220px;
+      max-width: 420px;
+      background: #fff;
+      position: relative;
+    }
+    .n-title {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--teal-900);
+      line-height: 1.3;
+    }
+    .n-sub {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 0.25rem;
+      line-height: 1.4;
+    }
+
+    /* Node variants */
+    .n-start {
+      background: var(--teal-900);
+      border-color: var(--teal-700);
+      border-radius: 30px;
+    }
+    .n-start .n-title { color: #fff; }
+    .n-start .n-sub   { color: var(--teal-300); }
+
+    .n-end {
+      background: var(--teal-700);
+      border-color: var(--teal-500);
+      border-radius: 30px;
+    }
+    .n-end .n-title { color: #fff; }
+    .n-end .n-sub   { color: var(--teal-100); }
+
+    .n-proc {
+      background: #fff;
+      border-color: var(--border);
+    }
+
+    .n-dec {
+      background: #fffbe6;
+      border-color: #e6c84a;
+    }
+    .n-dec .n-title { color: #7a6200; }
+    .n-dec .n-sub   { color: #a08a30; }
+
+    .n-ok {
+      background: #e8f8f2;
+      border-color: var(--teal-300);
+    }
+    .n-ok .n-title { color: var(--teal-700); }
+
+    .n-err {
+      background: #fde8e8;
+      border-color: #e87070;
+    }
+    .n-err .n-title { color: #8a1a1a; }
+    .n-err .n-sub   { color: #b05555; }
+
+    .n-info {
+      background: #f0f4ff;
+      border-color: #9ab0e8;
+    }
+    .n-info .n-title { color: #2a3a7a; }
+    .n-info .n-sub   { color: #556090; }
+
+    .n-teal {
+      background: var(--teal-100);
+      border-color: var(--teal-500);
+    }
+    .n-teal .n-title { color: var(--teal-900); }
+    .n-teal .n-sub   { color: var(--teal-700); }
+
+    /* ── Connector ── */
+    .conn {
+      width: 2px;
+      height: 36px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .conn.short { height: 22px; }
+    .conn.tall  { height: 50px; }
+    .conn-line {
+      flex: 1;
+      width: 2px;
+      background: var(--teal-300);
+      position: relative;
+      overflow: hidden;
+    }
+    .conn-line::after {
+      content: '';
+      position: absolute;
+      top: -100%;
+      left: 0;
+      width: 100%;
+      height: 200%;
+      background: linear-gradient(to bottom, transparent 0%, var(--teal-500) 50%, transparent 100%);
+      animation: flow-down 1.4s linear infinite;
+    }
+    @keyframes flow-down {
+      0%   { transform: translateY(0); }
+      100% { transform: translateY(50%); }
+    }
+    .conn-head {
+      width: 0; height: 0;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 8px solid var(--teal-300);
+    }
+
+    /* ── Branch ── */
+    .branch-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+    .split-bar {
+      height: 2px;
+      background: var(--teal-300);
+      width: var(--bar-w, 70%);
+    }
+    .merge-bar {
+      height: 2px;
+      background: var(--teal-300);
+      width: var(--bar-w, 70%);
+    }
+    .branches {
+      display: flex;
+      justify-content: space-around;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+    .branch-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+      flex: 1;
+    }
+    .branch-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      margin-bottom: 0;
+    }
+    .branch-label.yes { background: #e8f8f2; color: var(--teal-700); }
+    .branch-label.no  { background: #fde8e8; color: #8a1a1a; }
+    .branch-label.path { background: var(--teal-100); color: var(--teal-900); }
+
+    /* ── Responsive ── */
+    @media (max-width: 680px) {
+      .tab-panels { padding: 1.5rem 1rem; }
+      .page-header { padding: 1.5rem 1rem 1.2rem; }
+      .tab-nav { padding: 0 0.5rem; }
+      .n { min-width: 160px; max-width: 100%; }
+      .branches { flex-direction: column; align-items: center; }
+      .split-bar, .merge-bar { width: 2px !important; height: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Page Header ── -->
+<div class="page-header">
+  <a href="index.html" class="back-link">&larr; Back to Work Sample</a>
+  <h1>Epic Cadence, Visual Workflow Diagrams</h1>
+  <p>Five core process flows for Northeast Regional Health Cadence optimization initiative</p>
+</div>
+
+<!-- ── Tab Nav ── -->
+<div class="tab-nav">
+  <button class="tab-btn active" data-panel="tab-scheduling">Patient Scheduling</button>
+  <button class="tab-btn" data-panel="tab-referral">Referral Flow</button>
+  <button class="tab-btn" data-panel="tab-change">Change Management</button>
+  <button class="tab-btn" data-panel="tab-incident">Incident Response</button>
+  <button class="tab-btn" data-panel="tab-dr">DR Runbook</button>
+</div>
+
+<!-- ── Tab Panels ── -->
+<div class="tab-panels">
+
+  <!-- ══ TAB 1: Patient Scheduling ══ -->
+  <div class="tab-panel active" id="tab-scheduling">
+    <div class="panel-title">Patient Appointment Scheduling Flow</div>
+    <div class="panel-desc">
+      End-to-end flow for booking an appointment in Epic Cadence: from patient contact through
+      reminder confirmation, covering both phone and MyChart self-scheduling channels.
+      Hold pool rules and no-show risk scoring are integrated inline.
+    </div>
+
+    <div class="legend">
+      <div class="leg-item"><div class="leg-dot" style="background:var(--teal-900);border-color:var(--teal-700);"></div> Trigger / start</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#fff;border-color:var(--border);"></div> Process step</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#fffbe6;border-color:#e6c84a;"></div> Decision point</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#e8f8f2;border-color:var(--teal-300);"></div> Success / pass</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#fde8e8;border-color:#e87070;"></div> Failure / error</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#f0f4ff;border-color:#9ab0e8;"></div> Info / log / deferred</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--teal-100);border-color:var(--teal-500);"></div> Milestone</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--teal-700);border-color:var(--teal-500);"></div> Completion</div>
+    </div>
+
+    <div class="flow">
+
+      <div class="n n-start">
+        <div class="n-title">Patient Contact</div>
+        <div class="n-sub">Phone call to scheduling center or MyChart self-scheduling initiated</div>
+      </div>
+
+      <div class="conn"><div class="conn-line"></div><div class="conn-head"></div></div>
+
+      <div class="n n-dec">
+        <div class="n-title">Channel?</div>
+        <div class="n-sub">Phone vs. MyChart self-scheduling</div>
+      </div>
+
+      <!-- Branch: Phone vs MyChart -->
+      <div class="branch-wrap">
+        <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+        <div class="split-bar" style="--bar-w:72%;"></div>
+        <div class="branches" style="width:72%;margin:0 auto;">
+          <div class="branch-col">
+            <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+            <div class="branch-label path">Phone</div>
+            <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+            <div class="n n-proc">
+              <div class="n-title">Scheduler Verifies Identity</div>
+              <div class="n-sub">Name, DOB, address, last 4 of phone. MPI match confirmed.</div>
+            </div>
+            <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+            <div class="n n-proc">
+              <div class="n-title">Select Visit Type</div>
+              <div class="n-sub">Search using DEPT-TYPE-DUR naming convention. Apply scheduling rule group filter.</div>
+            </div>
+          </div>
+          <div class="branch-col">
+            <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+            <div class="branch-label path">MyChart</div>
+            <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+            <div class="n n-proc">
+              <div class="n-title">Patient Identity Verified</div>
+              <div class="n-sub">Epic two-step MyChart verification. MPI match automatic.</div>
+            </div>
+            <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+            <div class="n n-proc">
+              <div class="n-title">Self-Schedule Visit Types Shown</div>
+              <div class="n-sub">Only visit types flagged "MyChart self-schedulable" in rule group are displayed.</div>
+            </div>
+          </div>
+        </div>
+        <div class="merge-bar" style="--bar-w:72%;"></div>
+        <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+      </div>
+
+      <div class="n n-dec">
+        <div class="n-title">Slot Available in Template?</div>
+        <div class="n-sub">Check hold pool rules: standard, urgent hold, same-day hold, care-gap hold</div>
+      </div>
+
+      <!-- Branch: slot available vs not -->
+      <div class="branch-wrap">
+        <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+        <div class="split-bar" style="--bar-w:74%;"></div>
+        <div class="branches" style="width:74%;margin:0 auto;">
+          <div class="branch-col">
+            <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+            <div class="branch-label yes">Yes</div>
+            <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+            <div class="n n-ok">
+              <div class="n-title">Appointment Booked</div>
+              <div class="n-sub">Slot reserved. Cadence records created. Appointment confirmation sent.</div>
+            </div>
+          </div>
+          <div class="branch-col">
+            <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+            <div class="branch-label no">No Slot</div>
+            <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+            <div class="n n-err">
+              <div class="n-title">No Slot Available</div>
+              <div class="n-sub">Template full. Overbook requires supervisor auth or wait list entry.</div>
+            </div>
+            <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+            <div class="n n-info">
+              <div class="n-title">Add to Wait List (WLE)</div>
+              <div class="n-sub">Patient added to bump list. Automated notification when slot opens.</div>
+            </div>
+          </div>
+        </div>
+        <div class="merge-bar" style="--bar-w:74%;"></div>
+        <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+      </div>
+
+      <div class="n n-proc">
+        <div class="n-title">No-Show Risk Scored</div>
+        <div class="n-sub">Epic predictive model scores appointment. Risk above 40% adds to confirmation WQ.</div>
+      </div>
+
+      <div class="conn"><div class="conn-line"></div><div class="conn-head"></div></div>
+
+      <div class="n n-teal">
+        <div class="n-title">Automated Reminders Sent</div>
+        <div class="n-sub">72 hr email + 24 hr SMS/voice per patient preference. MyChart reschedule link included.</div>
+      </div>
+
+      <div class="conn"><div class="conn-line"></div><div class="conn-head"></div></div>
+
+      <div class="n n-dec">
+        <div class="n-title">Appointment Kept?</div>
+      </div>
+
+      <!-- Branch: kept vs no-show -->
+      <div class="branch-wrap">
+        <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+        <div class="split-bar" style="--bar-w:74%;"></div>
+        <div class="branches" style="width:74%;margin:0 auto;">
+          <div class="branch-col">
+            <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+            <div class="branch-label yes">Kept</div>
+            <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+            <div class="n n-end">
+              <div class="n-title">Check-In and Visit Complete</div>
+              <div class="n-sub">Appointment marked arrived/completed. Template utilization count incremented.</div>
+            </div>
+          </div>
+          <div class="branch-col">
+            <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+            <div class="branch-label no">No-Show</div>
+            <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+            <div class="n n-err">
+              <div class="n-title">No-Show Logged</div>
+              <div class="n-sub">Counted in no-show by visit-type report. Slot offered to bump list via overnight batch.</div>
+            </div>
+            <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+            <div class="n n-info">
+              <div class="n-title">Recall / Reschedule WQ</div>
+              <div class="n-sub">Entry created for outreach. Patient contacted within 5 business days per clinic policy.</div>
+            </div>
+          </div>
+        </div>
+        <div class="merge-bar" style="--bar-w:74%;"></div>
+      </div>
+
+    </div><!-- /.flow -->
+  </div><!-- /#tab-scheduling -->
+
+
+  <!-- ══ TAB 2: Referral Flow ══ -->
+  <div class="tab-panel" id="tab-referral">
+    <div class="panel-title">Referral and Authorization Flow</div>
+    <div class="panel-desc">
+      Closed-loop referral workflow from external provider referral submission through
+      appointment scheduling confirmation. Covers HL7 REF^I12 inbound processing,
+      referral workqueue triage, and outbound SIU^S12 confirmation back to the referring provider.
+    </div>
+
+    <div class="legend">
+      <div class="leg-item"><div class="leg-dot" style="background:var(--teal-900);border-color:var(--teal-700);"></div> Trigger / start</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#fff;border-color:var(--border);"></div> Process step</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#fffbe6;border-color:#e6c84a;"></div> Decision point</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#e8f8f2;border-color:var(--teal-300);"></div> Success / pass</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#fde8e8;border-color:#e87070;"></div> Failure / error</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#f0f4ff;border-color:#9ab0e8;"></div> Info / log</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--teal-700);border-color:var(--teal-500);"></div> Completion</div>
+    </div>
+
+    <div class="flow">
+
+      <div class="n n-start">
+        <div class="n-title">Referral Submitted</div>
+        <div class="n-sub">External provider sends HL7 REF^I12 or e-Referral via CommonWell / fax capture</div>
+      </div>
+
+      <div class="conn"><div class="conn-line"></div><div class="conn-head"></div></div>
+
+      <div class="n n-proc">
+        <div class="n-title">Bridges Receives REF^I12</div>
+        <div class="n-sub">Receiving app "NRH_REFERRAL_IN". Parse PID (patient), PRD (referring provider), OBR (service requested).</div>
+      </div>
+
+      <div class="conn"><div class="conn-line"></div><div class="conn-head"></div></div>
+
+      <div class="n n-dec">
+        <div class="n-title">MPI Match Found?</div>
+        <div class="n-sub">Match patient identity in Epic: name, DOB, MRN</div>
+      </div>
+
+      <!-- Branch: MPI match yes vs no -->
+      <div class="branch-wrap">
+        <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+        <div class="split-bar" style="--bar-w:74%;"></div>
+        <div class="branches" style="width:74%;margin:0 auto;">
+          <div class="branch-col">
+            <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+            <div class="branch-label yes">Match Found</div>
+            <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+            <div class="n n-ok">
+              <div class="n-title">Referral Order Created</div>
+              <div class="n-sub">Epic auto-creates referral order linked to patient MRN. Routes to Cadence referral WQ by specialty.</div>
+            </div>
+          </div>
+          <div class="branch-col">
+            <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+            <div class="branch-label no">No Match</div>
+            <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+            <div class="n n-err">
+              <div class="n-title">Bridges Error Queue</div>
+              <div class="n-sub">Message routed to error queue. Analyst review SLA: 4 hours. Manual MPI lookup or patient registration required.</div>
+            </div>
+          </div>
+        </div>
+        <div class="merge-bar" style="--bar-w:74%;"></div>
+        <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+      </div>
+
+      <div class="n n-proc">
+        <div class="n-title">Scheduler Picks Up Referral WQ Entry</div>
+        <div class="n-sub">SLA: 48 hours from receipt. WQ entry shows referring provider, specialty needed, diagnosis, insurance.</div>
+      </div>
+
+      <div class="conn"><div class="conn-line"></div><div class="conn-head"></div></div>
+
+      <div class="n n-dec">
+        <div class="n-title">Prior Auth Required?</div>
+        <div class="n-sub">Check payer rules for requested visit type / procedure</div>
+      </div>
+
+      <!-- Branch: auth required -->
+      <div class="branch-wrap">
+        <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+        <div class="split-bar" style="--bar-w:74%;"></div>
+        <div class="branches" style="width:74%;margin:0 auto;">
+          <div class="branch-col">
+            <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+            <div class="branch-label yes">Auth Required</div>
+            <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+            <div class="n n-info">
+              <div class="n-title">Auth Request Initiated</div>
+              <div class="n-sub">Authorization team submits to payer. Appointment held pending auth. Auth status tracked in Epic.</div>
+            </div>
+            <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+            <div class="n n-dec">
+              <div class="n-title">Auth Approved?</div>
+            </div>
+          </div>
+          <div class="branch-col">
+            <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+            <div class="branch-label yes">No Auth Needed</div>
+            <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+            <div class="n n-ok">
+              <div class="n-title">Proceed to Scheduling</div>
+              <div class="n-sub">Schedule directly. No auth hold needed.</div>
+            </div>
+          </div>
+        </div>
+        <div class="merge-bar" style="--bar-w:74%;"></div>
+        <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+      </div>
+
+      <div class="n n-proc">
+        <div class="n-title">Patient Contacted, Appointment Booked</div>
+        <div class="n-sub">Scheduler calls patient. Appointment created in Cadence and linked to referral order.</div>
+      </div>
+
+      <div class="conn"><div class="conn-line"></div><div class="conn-head"></div></div>
+
+      <div class="n n-proc">
+        <div class="n-title">Referral Order Closed</div>
+        <div class="n-sub">Referral order marked complete with appointment link. WQ entry resolved.</div>
+      </div>
+
+      <div class="conn"><div class="conn-line"></div><div class="conn-head"></div></div>
+
+      <div class="n n-teal">
+        <div class="n-title">Outbound SIU^S12 Sent</div>
+        <div class="n-sub">Bridges fires SIU^S12 to referring provider's EHR confirming appointment date and time. Closed loop complete.</div>
+      </div>
+
+      <div class="conn"><div class="conn-line"></div><div class="conn-head"></div></div>
+
+      <div class="n n-end">
+        <div class="n-title">Referral Capture Complete</div>
+        <div class="n-sub">Logged in referral tracking dashboard. Contributes to 92% capture rate target.</div>
+      </div>
+
+    </div><!-- /.flow -->
+  </div><!-- /#tab-referral -->
+
+
+  <!-- ══ TAB 3: Change Management ══ -->
+  <div class="tab-panel" id="tab-change">
+    <div class="panel-title">Cadence Change Management Lifecycle</div>
+    <div class="panel-desc">
+      Every Cadence configuration change: visit type additions, template modifications, and scheduling rule group edits
+      follow this lifecycle. No exceptions, regardless of perceived impact. The CAB process and TST validation
+      step are the safeguards that prevent incidents like the Cardiology outage.
+    </div>
+
+    <div class="legend">
+      <div class="leg-item"><div class="leg-dot" style="background:var(--teal-900);border-color:var(--teal-700);"></div> Trigger</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#fff;border-color:var(--border);"></div> Process step</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#fffbe6;border-color:#e6c84a;"></div> Decision point</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#e8f8f2;border-color:var(--teal-300);"></div> Approved / pass</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#fde8e8;border-color:#e87070;"></div> Rejected / rollback</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#f0f4ff;border-color:#9ab0e8;"></div> Documentation step</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--teal-700);border-color:var(--teal-500);"></div> Completion</div>
+    </div>
+
+    <div class="flow">
+
+      <div class="n n-start">
+        <div class="n-title">Change Request Submitted</div>
+        <div class="n-sub">Clinic submits ServiceNow form: affected component, business reason, preferred go-live date</div>
+      </div>
+
+      <div class="conn"><div class="conn-line"></div><div class="conn-head"></div></div>
+
+      <div class="n n-proc">
+        <div class="n-title">Analyst Impact Assessment</div>
+        <div class="n-sub">Review linked rule groups, other visit types using the template, active WQ entries, shared configs across clinics</div>
+      </div>
+
+      <div class="conn"><div class="conn-line"></div><div class="conn-head"></div></div>
+
+      <div class="n n-dec">
+        <div class="n-title">CAB Review Required?</div>
+        <div class="n-sub">Minor low-risk changes may use expedited path with supervisor approval</div>
+      </div>
+
+      <!-- Branch: CAB vs expedited -->
+      <div class="branch-wrap">
+        <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+        <div class="split-bar" style="--bar-w:74%;"></div>
+        <div class="branches" style="width:74%;margin:0 auto;">
+          <div class="branch-col">
+            <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+            <div class="branch-label path">CAB Required</div>
+            <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+            <div class="n n-dec">
+              <div class="n-title">CAB Decision</div>
+              <div class="n-sub">Bi-weekly CAB reviews: approve, deny, or return for more info</div>
+            </div>
+            <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+            <div class="n n-ok" style="font-size:0.82rem;">
+              <div class="n-title">CAB Approved</div>
+            </div>
+          </div>
+          <div class="branch-col">
+            <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+            <div class="branch-label path">Expedited</div>
+            <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+            <div class="n n-ok">
+              <div class="n-title">Supervisor Approval</div>
+              <div class="n-sub">Documented in ServiceNow ticket. Proceed to build.</div>
+            </div>
+          </div>
+        </div>
+        <div class="merge-bar" style="--bar-w:74%;"></div>
+        <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+      </div>
+
+      <div class="n n-proc">
+        <div class="n-title">Build in TST Environment</div>
+        <div class="n-sub">Analyst makes configuration change in test environment. Build steps recorded in SharePoint config tracker.</div>
+      </div>
+
+      <div class="conn"><div class="conn-line"></div><div class="conn-head"></div></div>
+
+      <div class="n n-proc">
+        <div class="n-title">Clinical Lead UAT Review</div>
+        <div class="n-sub">Clinic lead or super user validates change in TST. Written sign-off in ServiceNow ticket required.</div>
+      </div>
+
+      <div class="conn"><div class="conn-line"></div><div class="conn-head"></div></div>
+
+      <div class="n n-dec">
+        <div class="n-title">UAT Passed?</div>
+      </div>
+
+      <!-- Branch: UAT pass/fail -->
+      <div class="branch-wrap">
+        <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+        <div class="split-bar" style="--bar-w:74%;"></div>
+        <div class="branches" style="width:74%;margin:0 auto;">
+          <div class="branch-col">
+            <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+            <div class="branch-label yes">Pass</div>
+            <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+            <div class="n n-info">
+              <div class="n-title">Schedule Go-Live Window</div>
+              <div class="n-sub">Maintenance window for high-impact; off-peak for low-impact. Rollback steps confirmed.</div>
+            </div>
+            <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+            <div class="n n-proc">
+              <div class="n-title">Promote to PRD</div>
+              <div class="n-sub">Config tracker updated pre/post. ServiceNow status: Implemented.</div>
+            </div>
+          </div>
+          <div class="branch-col">
+            <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+            <div class="branch-label no">Fail</div>
+            <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+            <div class="n n-err">
+              <div class="n-title">Rework in TST</div>
+              <div class="n-sub">Analyst addresses UAT feedback. Re-submit for UAT review. No PRD promotion until pass.</div>
+            </div>
+          </div>
+        </div>
+        <div class="merge-bar" style="--bar-w:74%;"></div>
+        <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+      </div>
+
+      <div class="n n-teal">
+        <div class="n-title">Post-Go-Live Communication</div>
+        <div class="n-sub">ServiceNow email to affected clinics. Teams message to team leads. 7-day feedback form sent.</div>
+      </div>
+
+      <div class="conn"><div class="conn-line"></div><div class="conn-head"></div></div>
+
+      <div class="n n-end">
+        <div class="n-title">Change Complete</div>
+        <div class="n-sub">Analyst reviews feedback within 48 hours. Ticket closed. Metrics monitored for impact.</div>
+      </div>
+
+    </div><!-- /.flow -->
+  </div><!-- /#tab-change -->
+
+
+  <!-- ══ TAB 4: Incident Response ══ -->
+  <div class="tab-panel" id="tab-incident">
+    <div class="panel-title">Incident Response and Root Cause Analysis</div>
+    <div class="panel-desc">
+      Cadence incident response flow from first report through resolution and post-incident review.
+      Based on the Cardiology scheduling outage RCA described in the work sample: 29 minutes downtime,
+      root cause identified in 13 minutes, fix promoted in 15 minutes.
+    </div>
+
+    <div class="legend">
+      <div class="leg-item"><div class="leg-dot" style="background:var(--teal-900);border-color:var(--teal-700);"></div> Trigger</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#fff;border-color:var(--border);"></div> Process step</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#fffbe6;border-color:#e6c84a;"></div> Decision point</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#e8f8f2;border-color:var(--teal-300);"></div> Resolved / success</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#fde8e8;border-color:#e87070;"></div> Failure / escalation</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#f0f4ff;border-color:#9ab0e8;"></div> Documentation / log</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--teal-100);border-color:var(--teal-500);"></div> Milestone</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--teal-700);border-color:var(--teal-500);"></div> Closure</div>
+    </div>
+
+    <div class="flow">
+
+      <div class="n n-start">
+        <div class="n-title">Incident Reported</div>
+        <div class="n-sub">Scheduler calls help desk. Scheduling failure, patient access impacted. P1 ticket opened.</div>
+      </div>
+
+      <div class="conn"><div class="conn-line"></div><div class="conn-head"></div></div>
+
+      <div class="n n-proc">
+        <div class="n-title">Cadence Analyst Paged</div>
+        <div class="n-sub">On-call analyst notified within 7 minutes. Remote login to Hyperspace via Citrix.</div>
+      </div>
+
+      <div class="conn"><div class="conn-line"></div><div class="conn-head"></div></div>
+
+      <div class="n n-proc">
+        <div class="n-title">Triage in Cadence Activity</div>
+        <div class="n-sub">Check scheduling rule groups for affected department. Check Bridges interface status. Check recent change log.</div>
+      </div>
+
+      <div class="conn"><div class="conn-line"></div><div class="conn-head"></div></div>
+
+      <div class="n n-dec">
+        <div class="n-title">Root Cause Identified?</div>
+        <div class="n-sub">Configuration change, interface failure, or Epic application issue?</div>
+      </div>
+
+      <!-- Branch: root cause identified yes/no -->
+      <div class="branch-wrap">
+        <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+        <div class="split-bar" style="--bar-w:74%;"></div>
+        <div class="branches" style="width:74%;margin:0 auto;">
+          <div class="branch-col">
+            <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+            <div class="branch-label yes">Identified</div>
+            <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+            <div class="n n-proc">
+              <div class="n-title">Build Fix in TST</div>
+              <div class="n-sub">Replicate configuration state in TST. Apply fix. Validate scheduling works. Confirm no side effects.</div>
+            </div>
+            <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+            <div class="n n-teal">
+              <div class="n-title">Promote Fix to PRD</div>
+              <div class="n-sub">Emergency change. Document in config tracker. Notify CAB Lead with post-facto ServiceNow ticket.</div>
+            </div>
+            <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+            <div class="n n-ok">
+              <div class="n-title">Clinic Confirms Restored</div>
+              <div class="n-sub">Scheduling team validates appointments booking normally. P1 downtime clock stopped.</div>
+            </div>
+          </div>
+          <div class="branch-col">
+            <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+            <div class="branch-label no">Not Identified</div>
+            <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+            <div class="n n-err">
+              <div class="n-title">Escalate to Epic TS</div>
+              <div class="n-sub">Log Epic support case with Hyperspace version, error details, and change log screenshot.</div>
+            </div>
+            <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+            <div class="n n-info">
+              <div class="n-title">Workaround Activated</div>
+              <div class="n-sub">Downtime procedures extended if Epic TS resolution exceeds 60 min. Paper schedule log activated.</div>
+            </div>
+          </div>
+        </div>
+        <div class="merge-bar" style="--bar-w:74%;"></div>
+        <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+      </div>
+
+      <div class="n n-info">
+        <div class="n-title">Post-Incident Review (Within 5 Business Days)</div>
+        <div class="n-sub">Timeline documented, root causes identified, corrective actions assigned with owners and due dates. Shared with IT leadership.</div>
+      </div>
+
+      <div class="conn"><div class="conn-line"></div><div class="conn-head"></div></div>
+
+      <div class="n n-end">
+        <div class="n-title">Corrective Actions Implemented</div>
+        <div class="n-sub">Access changes, alerting, and training updates completed. P1 ticket closed. RCA added to quarterly governance review.</div>
+      </div>
+
+    </div><!-- /.flow -->
+  </div><!-- /#tab-incident -->
+
+
+  <!-- ══ TAB 5: DR Runbook ══ -->
+  <div class="tab-panel" id="tab-dr">
+    <div class="panel-title">Disaster Recovery and Downtime Runbook</div>
+    <div class="panel-desc">
+      Step-by-step scheduling disaster recovery: from Epic outage declaration through downtime operations,
+      restore confirmation, and post-restore reconciliation. RPO: 4 hours. RTO: 2 hours.
+      Annual DR drill required to validate timings and train new staff.
+    </div>
+
+    <div class="legend">
+      <div class="leg-item"><div class="leg-dot" style="background:var(--teal-900);border-color:var(--teal-700);"></div> Trigger</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#fff;border-color:var(--border);"></div> Process step</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#fffbe6;border-color:#e6c84a;"></div> Decision point</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#e8f8f2;border-color:var(--teal-300);"></div> Recovery / pass</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#fde8e8;border-color:#e87070;"></div> Escalation</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#f0f4ff;border-color:#9ab0e8;"></div> Documentation / log step</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--teal-100);border-color:var(--teal-500);"></div> Milestone</div>
+      <div class="leg-item"><div class="leg-dot" style="background:var(--teal-700);border-color:var(--teal-500);"></div> Operations restored</div>
+    </div>
+
+    <div class="flow">
+
+      <div class="n n-start">
+        <div class="n-title">Epic Downtime Declared</div>
+        <div class="n-sub">IT operations confirms Epic unavailable. Scheduling supervisors and clinic leads notified via phone tree.</div>
+      </div>
+
+      <div class="conn"><div class="conn-line"></div><div class="conn-head"></div></div>
+
+      <div class="n n-proc">
+        <div class="n-title">Activate Downtime Schedule Printout</div>
+        <div class="n-sub">Use 7:00 AM or noon printout (whichever is more recent). Covers next 8 hours of scheduled appointments per clinic.</div>
+      </div>
+
+      <div class="conn"><div class="conn-line"></div><div class="conn-head"></div></div>
+
+      <div class="n n-teal">
+        <div class="n-title">Downtime Operations Active</div>
+        <div class="n-sub">Schedulers work from paper. New patient requests logged on paper callback log: name, DOB, phone, visit type requested.</div>
+      </div>
+
+      <div class="conn"><div class="conn-line"></div><div class="conn-head"></div></div>
+
+      <div class="n n-proc">
+        <div class="n-title">Urgent Appointments Triaged</div>
+        <div class="n-sub">Clinic lead makes real-time decisions. Urgent patients directed to walk-in or urgent care. No Epic entry during downtime.</div>
+      </div>
+
+      <div class="conn"><div class="conn-line"></div><div class="conn-head"></div></div>
+
+      <div class="n n-dec">
+        <div class="n-title">Epic Restore Signal Received?</div>
+        <div class="n-sub">IT operations confirms Epic accessible. Test scheduling before notifying all staff.</div>
+      </div>
+
+      <!-- Branch: restore confirmed vs extended downtime -->
+      <div class="branch-wrap">
+        <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+        <div class="split-bar" style="--bar-w:74%;"></div>
+        <div class="branches" style="width:74%;margin:0 auto;">
+          <div class="branch-col">
+            <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+            <div class="branch-label yes">Restored</div>
+            <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+            <div class="n n-ok">
+              <div class="n-title">Epic Restore Confirmed</div>
+              <div class="n-sub">Cadence analyst test-books a dummy appointment in TST to confirm scheduling rules active. Notify scheduling supervisors.</div>
+            </div>
+          </div>
+          <div class="branch-col">
+            <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+            <div class="branch-label no">Extended Downtime</div>
+            <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+            <div class="n n-err">
+              <div class="n-title">Extended Downtime Protocol</div>
+              <div class="n-sub">Generate second downtime printout. Escalate to IT leadership. Patient callback list actively managed. Volume overflow plan activated.</div>
+            </div>
+          </div>
+        </div>
+        <div class="merge-bar" style="--bar-w:74%;"></div>
+        <div class="conn short"><div class="conn-line"></div><div class="conn-head"></div></div>
+      </div>
+
+      <div class="n n-proc">
+        <div class="n-title">Post-Restore: Enter Missed Appointments</div>
+        <div class="n-sub">Data entry team enters paper callback log into Cadence within 4 hours. MPI duplicate detection run before committing entries.</div>
+      </div>
+
+      <div class="conn"><div class="conn-line"></div><div class="conn-head"></div></div>
+
+      <div class="n n-proc">
+        <div class="n-title">Bridges Interface Restart</div>
+        <div class="n-sub">Verify all SIU and REF interfaces reconnected. Replay messages from Bridges error queue (up to 4 hours of backlog).</div>
+      </div>
+
+      <div class="conn"><div class="conn-line"></div><div class="conn-head"></div></div>
+
+      <div class="n n-proc">
+        <div class="n-title">WQ and Template Reconciliation</div>
+        <div class="n-sub">Compare WQ counts to pre-downtime snapshot. Verify provider templates intact for next 14 scheduling days. Flag gaps to clinic admins.</div>
+      </div>
+
+      <div class="conn"><div class="conn-line"></div><div class="conn-head"></div></div>
+
+      <div class="n n-info">
+        <div class="n-title">Stakeholder Notification</div>
+        <div class="n-sub">ServiceNow incident updated with restore time and reconciliation summary. Scheduling supervisors confirm normal operations before P1 closed.</div>
+      </div>
+
+      <div class="conn"><div class="conn-line"></div><div class="conn-head"></div></div>
+
+      <div class="n n-end">
+        <div class="n-title">Normal Operations Restored</div>
+        <div class="n-sub">All appointments reconciled. Interfaces green. P1 incident closed. DR drill findings documented if applicable.</div>
+      </div>
+
+    </div><!-- /.flow -->
+  </div><!-- /#tab-dr -->
+
+</div><!-- /.tab-panels -->
+
+<script>
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      const panel = document.getElementById(btn.dataset.panel);
+      if (panel) panel.classList.add('active');
+    });
+  });
+</script>
+
+</body>
+</html>
